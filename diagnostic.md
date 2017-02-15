@@ -5,7 +5,7 @@ Place your responses inside the fenced code-blocks where indivated by comments.
 1.  Describe a reason why a join tables may be valuable.
 
   ```md
-    # < Your Response Here >
+    It is valuable because it allows a representation of different types of relationships between tables. Join tables give more options as far as how to represent and manipulate the data in the tables.
   ```
 
 1.  Provide a database table structure and explain the Entity Relationship that
@@ -15,23 +15,37 @@ Place your responses inside the fenced code-blocks where indivated by comments.
   join table with references to `Movies` and `Profiles`.
 
   ```md
-    # < Your Response Here >
+  profiles has many movies through favorites. And movies have many profiles through favorites. Favorites belongs to profiles.
   ```
 
 1.  For the above example, what needs to be added to the Model files?
 
   ```rb
   class Profile < ActiveRecord::Base
+  has_many movies through favorites
+  has_many favorites
+
+  validates :given_name, presence true
+  validates :surname, presence true
+  validates :email, presence true
   end
   ```
 
   ```rb
   class Movie < ActiveRecord::Base
+  has_many :profiles through: :favorites
+
+  validates :title, presence true
+  validates :release_date, presence true
+  validates :length, presnce true
   end
   ```
 
   ```rb
   class Favorite < ActiveRecord::Base
+  has_many :profiles
+  has_many :movies
+
   end
   ```
 
@@ -40,11 +54,15 @@ like to show all movies favorited by a profile on
 `http://localhost:3000/profiles/1`
 
   ```md
-    # < Your Response Here >
+  The Serializer gives the id, and defines the attributes used for the class. This allows the profile to be tracked by their id number.
   ```
 
   ```rb
   class ProfileSerializer < ActiveModel::Serializer
+  attributes :id, :given_name, :surname, :email
+
+  def show_all_movies()
+  
   end
   ```
 
